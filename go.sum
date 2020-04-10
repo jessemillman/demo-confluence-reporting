@@ -1,0 +1,11 @@
+github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/jessemillman/confluence-go-api v0.0.0-20200410023337-c2f3b52b701d h1:F3OLj24Lcg2cQlpZUpXkYY9FoY+epN49lU/1oLMXjyk=
+github.com/jessemillman/confluence-go-api v0.0.0-20200410023337-c2f3b52b701d/go.mod h1:t5XHxD4QfBYOmlv2e3H7IL4N6GedXlSsaSrbWubD3Oc=
+github.com/jessemillman/confluence-go-api v0.0.0-20200410024046-aebea40c1cf0 h1:Xuj/gv4ErDrbkiO0uYm8FF7L/nPXJ6Cj1XYhWRn9Zb4=
+github.com/jessemillman/confluence-go-api v0.0.0-20200410024046-aebea40c1cf0/go.mod h1:t5XHxD4QfBYOmlv2e3H7IL4N6GedXlSsaSrbWubD3Oc=
+github.com/jessemillman/confluence-go-api v1.0.5 h1:EsB0XX/w9YfV5JLW1jkbx43OuJbDXU0jlNsNKxrCPls=
+github.com/jessemillman/confluence-go-api v1.0.5/go.mod h1:t5XHxD4QfBYOmlv2e3H7IL4N6GedXlSsaSrbWubD3Oc=
+github.com/magefile/mage v1.8.0/go.mod h1:IUDi13rsHje59lecXokTfGX0QIzO45uVPlXnJYsXepA=
+github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
+github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
