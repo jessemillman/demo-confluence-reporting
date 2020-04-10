@@ -1,13 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
+	"github.com/gocarina/gocsv"
 	confluence "github.com/jessemillman/confluence-go-api"
 )
 
@@ -28,8 +27,8 @@ func main() {
 		apiURL := fmt.Sprintf("https://%s.atlassian.net/wiki/rest/api", subdomain)
 		var spaces *confluence.AllSpaces // the spaces to process
 
-		reports := []Report{} // what we'll report on
-		expand := []string{   // options to expand (confluence api)
+		reports := []SimpleReport{} // what we'll report on
+		expand := []string{         // options to expand (confluence api)
 			"version", // gets version information
 			"space",   // gets parent space information
 		}
@@ -93,23 +92,32 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				r := Report{
+				r := SimpleReport{
 					ID:          v.ID,
 					Type:        v.Type,
 					Status:      v.Status,
 					Title:       v.Title,
-					Version:     v.Version,
-					Space:       v.Space,
-					LastUpdated: h.LastUpdated,
+					Version:     v.Version.Number,
+					Space:       v.Space.Key,
+					LastUpdated: h.LastUpdated.By.Username,
 					Latest:      h.Latest,
-					CreatedBy:   h.CreatedBy,
+					CreatedBy:   h.CreatedBy.DisplayName,
 					CreatedDate: h.CreatedDate,
 				}
 				reports = append(reports, r)
 			}
 		}
-		b, err := json.Marshal(reports)
-		ioutil.WriteFile("results.json", b, 0644)
+		b, err := gocsv.MarshalString(&reports)
+
+		file, err := os.Create("results.csv")
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			file.WriteString(b)
+			fmt.Println("Done")
+		}
+		file.Close()
+
 	} else {
 		os.Exit(1)
 	}

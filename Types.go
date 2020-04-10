@@ -15,3 +15,16 @@ type Report struct {
 	CreatedBy   confluence.User        `json:"createdBy"`
 	CreatedDate string                 `json:"createdDate"`
 }
+
+type SimpleReport struct {
+	ID          string `csv:"id"`
+	Type        string `csv:"type"`
+	Status      string `csv:"status"`
+	Title       string `csv:"title"`
+	Version     int    `csv:"version"`
+	Space       string `csv:"space"`
+	LastUpdated string `csv:"lastUpdated"`
+	Latest      bool   `csv:"latest"`
+	CreatedBy   string `csv:"createdBy"`
+	CreatedDate string `csv:"createdDate"`
+}
