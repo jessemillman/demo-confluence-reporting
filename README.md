@@ -4,8 +4,8 @@ Is a demonstration golang application to pull reporting information out of confl
 
 ## Supported Features
 
-- Gets History & Version information from all of your spaces
-- Cane enumerate _all_ spaces, or an _individual_ defined space.
+- Gets History & Version information from all of pages in your spaces as JSON or CSV.
+- Can enumerate _all_ spaces, or an _individual_ defined space.
 
 This is a demonstration application & therefore extremely limited in scope. If you want additional features, please feel free to raise an issue, or have a crack yourself & open a PR.
 
