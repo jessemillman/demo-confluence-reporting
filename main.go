@@ -93,16 +93,17 @@ func main() {
 					log.Fatal(err)
 				}
 				r := SimpleReport{
-					ID:          v.ID,
-					Type:        v.Type,
-					Status:      v.Status,
-					Title:       v.Title,
-					Version:     v.Version.Number,
-					Space:       v.Space.Key,
-					LastUpdated: h.LastUpdated.When,
-					Latest:      h.Latest,
-					CreatedBy:   h.CreatedBy.DisplayName,
-					CreatedDate: h.CreatedDate,
+					ID:            v.ID,
+					Type:          v.Type,
+					Status:        v.Status,
+					Title:         v.Title,
+					Version:       v.Version.Number,
+					Space:         v.Space.Key,
+					LastUpdated:   h.LastUpdated.When,
+					LastUpdatedBy: h.LastUpdated.By.DisplayName,
+					Latest:        h.Latest,
+					CreatedBy:     h.CreatedBy.DisplayName,
+					CreatedDate:   h.CreatedDate,
 				}
 				reports = append(reports, r)
 			}

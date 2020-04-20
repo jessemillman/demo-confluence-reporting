@@ -17,14 +17,15 @@ type Report struct {
 }
 
 type SimpleReport struct {
-	ID          string `csv:"id"`
-	Type        string `csv:"type"`
-	Status      string `csv:"status"`
-	Title       string `csv:"title"`
-	Version     int    `csv:"version"`
-	Space       string `csv:"space"`
-	LastUpdated string `csv:"lastUpdated"`
-	Latest      bool   `csv:"latest"`
-	CreatedBy   string `csv:"createdBy"`
-	CreatedDate string `csv:"createdDate"`
+	ID            string `csv:"id"`
+	Type          string `csv:"type"`
+	Status        string `csv:"status"`
+	Title         string `csv:"title"`
+	Version       int    `csv:"version"`
+	Space         string `csv:"space"`
+	LastUpdated   string `csv:"lastUpdated"`
+	LastUpdatedBy string `csv:"lastUpdatedBy"`
+	Latest        bool   `csv:"latest"`
+	CreatedBy     string `csv:"createdBy"`
+	CreatedDate   string `csv:"createdDate"`
 }
