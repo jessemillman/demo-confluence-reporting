@@ -99,7 +99,7 @@ func main() {
 					Title:       v.Title,
 					Version:     v.Version.Number,
 					Space:       v.Space.Key,
-					LastUpdated: h.LastUpdated.By.Username,
+					LastUpdated: h.LastUpdated.When,
 					Latest:      h.Latest,
 					CreatedBy:   h.CreatedBy.DisplayName,
 					CreatedDate: h.CreatedDate,
