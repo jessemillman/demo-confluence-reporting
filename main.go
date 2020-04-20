@@ -109,7 +109,7 @@ func main() {
 		}
 		b, err := gocsv.MarshalString(&reports)
 
-		file, err := os.Create("results.csv")
+		file, err := os.Create("/output/results.csv")
 		if err != nil {
 			fmt.Println(err)
 		} else {
