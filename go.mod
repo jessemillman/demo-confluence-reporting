@@ -1,4 +1,4 @@
-module github.com/jessemillman/confluence-reporting
+module github.com/jessemillman/demo-confluence-reporting
 
 go 1.12
 
