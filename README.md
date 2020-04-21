@@ -30,17 +30,17 @@ Docker run --name cr demo-confluence-reporting ./main -spaceKey=example -reportT
 2. Grab a copy of the confluence api wrapper by running `go get github.com/jessemillman/confluence-go-api`
 3. Ensure you have the required environment varibales set (i.e. run `export CONFLUENCE_SUBDOMAIN=XXXX`, etc)
 4. Build the application with `go build all`
-5. Run the application with `./demo-confluence-reporting -spaceKey=TECH -reportType=csv` or similar.
+5. Run the application with `./demo-confluence-reporting --spaceKey=TECH --reportType=csv` or similar.
 
 ## Usage
 
 ### Simple example
 
 To return information of all content, in all spaces as a CSV (this writes to):
-`demo-confluence-reporting -allSpaces=true -reportType=csv`
+`demo-confluence-reporting --allSpaces=true --reportType=csv`
 
 To return information on a certain space with the key TEST in JSON:
-`demo-confluence-reporting -spaceKey=TEST -reportType=json`
+`demo-confluence-reporting -spaceKey=TEST --reportType=json`
 
 > NOTE: Output is written to a file `/output/result.csv` or `/output/result.json` because i map that to /tmp/ in docker with `-v /tmp:/output/`. 
 
