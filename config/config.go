@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"flag"
@@ -6,10 +6,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/jessemillman/demo-confluence-reporting/common"
 	"github.com/pkg/errors"
 )
 
-func initialize() (configuration, error) {
+// Initialize initializes a configuration file
+func Initialize() (common.Configuration, error) {
 	// args
 	spaceKey := flag.String("spaceKey", "", "The Key of the space to process")
 	reportType := flag.String("reportType", "csv", "Type of report to generate (csv or json) - csv is default")
@@ -36,7 +38,7 @@ func initialize() (configuration, error) {
 	apiKey, keyExists := os.LookupEnv("CONFLUENCE_KEY")
 
 	if domainExists && usernameExists && keyExists {
-		return configuration{
+		return common.Configuration{
 			SpaceKey:       *spaceKey,
 			QueryAllSpaces: *allSpacesFlag,
 			ConfluenceURL:  fmt.Sprintf("https://%s.atlassian.net/wiki/rest/api", subdomain),
@@ -45,7 +47,7 @@ func initialize() (configuration, error) {
 			ReportType:     *reportType,
 		}, nil
 	}
-	return configuration{}, errors.New("Error generating configuration")
+	return common.Configuration{}, errors.New("Error generating configuration")
 }
 
 func reportValidator(r string) bool {

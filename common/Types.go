@@ -1,7 +1,7 @@
-package main
+package common
 
-// configuration defines the settings used to run the program
-type configuration struct {
+// Configuration defines the settings used to run the program
+type Configuration struct {
 	SpaceKey       string `json:"spaceKey"`
 	QueryAllSpaces bool   `json:"queryAllSpaces"`
 	ConfluenceURL  string `json:"subdomain"`
@@ -10,8 +10,8 @@ type configuration struct {
 	ReportType     string `json:"type"`
 }
 
-// reportLine is used to generate the csv & json output
-type reportLine struct {
+// ReportLine is used to generate the csv & json output
+type ReportLine struct {
 	ID            string `csv:"id"`
 	Type          string `csv:"type"`
 	Status        string `csv:"status"`

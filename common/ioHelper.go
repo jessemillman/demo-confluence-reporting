@@ -1,4 +1,4 @@
-package main
+package common
 
 import (
 	"encoding/json"
@@ -11,8 +11,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// fileWriter handles which type of report to write
-func fileWriter(r []reportLine, s string) {
+// FileWriter handles which type of report to write
+func FileWriter(r []ReportLine, s string) {
 	switch s {
 	case "csv":
 		tryWriteCSV(r)
@@ -23,8 +23,8 @@ func fileWriter(r []reportLine, s string) {
 	}
 }
 
-// tryWriteCSV tries to write the report to /output/results.csv as a CSV
-func tryWriteCSV(r []reportLine) {
+// TryWriteCSV tries to write the report to /output/results.csv as a CSV
+func tryWriteCSV(r []ReportLine) {
 	//output := "/output/results.csv"
 	output := "results.csv"
 
@@ -44,8 +44,8 @@ func tryWriteCSV(r []reportLine) {
 	fmt.Println("Successfully Wrote file to /output/results.csv")
 }
 
-// tryWriteJSON tries to write the report to /output as JSON
-func tryWriteJSON(r []reportLine) {
+// TryWriteJSON tries to write the report to /output as JSON
+func tryWriteJSON(r []ReportLine) {
 	//output := "/output/results.json"
 	output := "results.json"
 	// marshall the object to a json string

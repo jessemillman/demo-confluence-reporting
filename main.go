@@ -5,20 +5,23 @@ import (
 	"log"
 
 	confluence "github.com/jessemillman/confluence-go-api"
+	"github.com/jessemillman/demo-confluence-reporting/common"
+	"github.com/jessemillman/demo-confluence-reporting/config"
+
 	"github.com/pkg/errors"
 )
 
 func main() {
 
 	// initialize configuration
-	conf, confError := initialize()
+	conf, confError := config.Initialize()
 	if confError != nil {
 		log.Fatal(errors.Wrap(confError, "Exiting due to configuration error"))
 	}
 
 	// initialize variables
 	var spaces *confluence.AllSpaces // the spaces to process
-	reports := []reportLine{}        // what we'll report on
+	reports := []common.ReportLine{} // what we'll report on
 	expand := []string{              // options to expand (confluence api)
 		"version", // gets version information
 		"space",   // gets parent space information
@@ -76,7 +79,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			r := reportLine{
+			r := common.ReportLine{
 				ID:            v.ID,
 				Type:          v.Type,
 				Status:        v.Status,
@@ -92,6 +95,6 @@ func main() {
 			reports = append(reports, r)
 		}
 	}
-	fileWriter(reports, conf.ReportType)
+	common.FileWriter(reports, conf.ReportType)
 
 }
