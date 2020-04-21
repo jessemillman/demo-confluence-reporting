@@ -1,116 +1,97 @@
 package main
 
 import (
-	"encoding/json"
-	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"os"
 
 	confluence "github.com/jessemillman/confluence-go-api"
+	"github.com/pkg/errors"
 )
 
 func main() {
 
-	// args
-	spaceKey := flag.String("spaceKey", "", "Space to process")
-	allSpacesFlag := flag.Bool("allSpaces", false, "Should we process all spaces?")
-	flag.Parse()
+	// initialize configuration
+	conf, confError := initialize()
+	if confError != nil {
+		log.Fatal(errors.Wrap(confError, "Exiting due to configuration error"))
+	}
 
-	// environment variables
-	subdomain, domainExists := os.LookupEnv("CONFLUENCE_SUBDOMAIN")
-	userName, usernameExists := os.LookupEnv("CONFLUENCE_USERNAME")
-	apiKey, keyExists := os.LookupEnv("CONFLUENCE_KEY")
+	// initialize variables
+	var spaces *confluence.AllSpaces // the spaces to process
+	reports := []reportLine{}        // what we'll report on
+	expand := []string{              // options to expand (confluence api)
+		"version", // gets version information
+		"space",   // gets parent space information
+	}
 
-	if domainExists && usernameExists && keyExists {
-		// variables
-		apiURL := fmt.Sprintf("https://%s.atlassian.net/wiki/rest/api", subdomain)
-		var spaces *confluence.AllSpaces // the spaces to process
+	// initialize a new confluence api instance
+	api, err := confluence.NewAPI(conf.ConfluenceURL,
+		conf.UserName,
+		conf.APIKey)
+	if err != nil {
+		log.Fatal(errors.Wrap(err, "Error with Confluence API"))
+	}
 
-		reports := []Report{} // what we'll report on
-		expand := []string{   // options to expand (confluence api)
-			"version", // gets version information
-			"space",   // gets parent space information
+	// get all spaces if requested
+	if conf.QueryAllSpaces {
+		spaces, err = api.GetAllSpaces(confluence.AllSpacesQuery{
+			Status: "current",
+			Type:   "global",
+			Limit:  500,
+		})
+		if err != nil {
+			log.Fatal(errors.Wrap(err, "Error with Querying All Spaces"))
 		}
-
-		// valiate input
-		if *spaceKey == "" && *allSpacesFlag == false {
-			flag.PrintDefaults()
-			os.Exit(1)
+	} else { // check only the requested spaceKey
+		spaces, err = api.GetAllSpaces(confluence.AllSpacesQuery{
+			Status:   "current",
+			Type:     "global",
+			SpaceKey: conf.SpaceKey,
+			Limit:    500,
+		})
+		if err != nil {
+			log.Fatal(errors.Wrap(err, "Error with Querying Space"))
 		}
+	}
 
-		// initialize a new api instance
-		api, err := confluence.NewAPI(apiURL,
-			userName,
-			apiKey)
+	for _, s := range spaces.Results {
+		// get contents of space
+		fmt.Println("Processing Space ", s.Key)
+
+		res, err := api.GetContent(confluence.ContentQuery{
+			SpaceKey: s.Key,
+			Type:     "page",
+			OrderBy:  "history.createdDate desc",
+			Expand:   expand,
+			Limit:    1000,
+		})
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// get all spaces if requested
-		if *allSpacesFlag {
-			spaces, err = api.GetAllSpaces(confluence.AllSpacesQuery{
-				Status: "current",
-				Type:   "global",
-				Limit:  500,
-			})
+		for _, v := range res.Results {
+			fmt.Println("Processing Page ", v.Title)
+
+			h, err := api.GetHistory(v.ID)
 			if err != nil {
 				log.Fatal(err)
 			}
-		} else { // check only the requested spaceKey
-			spaces, err = api.GetAllSpaces(confluence.AllSpacesQuery{
-				Status:   "current",
-				Type:     "global",
-				SpaceKey: *spaceKey,
-				Limit:    500,
-			})
-			if err != nil {
-				log.Fatal(err)
+			r := reportLine{
+				ID:            v.ID,
+				Type:          v.Type,
+				Status:        v.Status,
+				Title:         v.Title,
+				Version:       v.Version.Number,
+				Space:         v.Space.Key,
+				LastUpdated:   h.LastUpdated.When,
+				LastUpdatedBy: h.LastUpdated.By.DisplayName,
+				Latest:        h.Latest,
+				CreatedBy:     h.CreatedBy.DisplayName,
+				CreatedDate:   h.CreatedDate,
 			}
+			reports = append(reports, r)
 		}
-
-		for _, s := range spaces.Results {
-			// get contents of space
-			fmt.Println("Processing Space ", s.Key)
-
-			res, err := api.GetContent(confluence.ContentQuery{
-				SpaceKey: s.Key,
-				Type:     "page",
-				OrderBy:  "history.createdDate desc",
-				Expand:   expand,
-				Limit:    1000,
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			for _, v := range res.Results {
-				//fmt.Printf("%+v\n", v)
-				fmt.Println("Processing Page ", v.Title)
-
-				h, err := api.GetHistory(v.ID)
-				if err != nil {
-					log.Fatal(err)
-				}
-				r := Report{
-					ID:          v.ID,
-					Type:        v.Type,
-					Status:      v.Status,
-					Title:       v.Title,
-					Version:     v.Version,
-					Space:       v.Space,
-					LastUpdated: h.LastUpdated,
-					Latest:      h.Latest,
-					CreatedBy:   h.CreatedBy,
-					CreatedDate: h.CreatedDate,
-				}
-				reports = append(reports, r)
-			}
-		}
-		b, err := json.Marshal(reports)
-		ioutil.WriteFile("results.json", b, 0644)
-	} else {
-		os.Exit(1)
 	}
+	fileWriter(reports, conf.ReportType)
+
 }
