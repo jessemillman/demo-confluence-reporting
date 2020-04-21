@@ -42,7 +42,7 @@ To return information of all content, in all spaces as a CSV (this writes to):
 To return information on a certain space with the key TEST in JSON:
 `demo-confluence-reporting -spaceKey=TEST --reportType=json`
 
-> note that the output is written to /output/result.csv or /output/result.json because i map that in docker. 
+> NOTE: Output is written to a file `/output/result.csv` or `/output/result.json` because i map that to /tmp/ in docker with `-v /tmp:/output/`. 
 
 ## Code Documentation
 
