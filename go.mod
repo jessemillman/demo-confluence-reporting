@@ -3,7 +3,6 @@ module github.com/jessemillman/demo-confluence-reporting
 go 1.12
 
 require (
-	github.com/gocarina/gocsv v0.0.0-20200330101823-46266ca37bd3 // indirect
 	github.com/jessemillman/confluence-go-api v1.0.5
 	github.com/jessemillman/demo-confluence-reporting/common v0.0.0-00010101000000-000000000000
 	github.com/jessemillman/demo-confluence-reporting/config v0.0.0-00010101000000-000000000000

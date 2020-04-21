@@ -25,8 +25,7 @@ func FileWriter(r []ReportLine, s string) {
 
 // TryWriteCSV tries to write the report to /output/results.csv as a CSV
 func tryWriteCSV(r []ReportLine) {
-	//output := "/output/results.csv"
-	output := "results.csv"
+	output := "/output/results.csv"
 
 	// marshall the object to a csv string
 	s, err := gocsv.MarshalString(r)
@@ -46,8 +45,8 @@ func tryWriteCSV(r []ReportLine) {
 
 // TryWriteJSON tries to write the report to /output as JSON
 func tryWriteJSON(r []ReportLine) {
-	//output := "/output/results.json"
-	output := "results.json"
+	output := "/output/results.json"
+
 	// marshall the object to a json string
 	s, err := json.Marshal(r)
 	if err != nil {
